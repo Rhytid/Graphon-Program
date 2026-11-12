@@ -35,12 +35,15 @@ python -m venv .venv
 | `--top-k` | How many leading eigenvalues to track |
 | `--tol` | Tolerance for treating two eigenvalues as equal when counting multiplicity |
 | `--seed` | Random seed, for reproducible runs |
+| `--draw-n` | Number of vertices in the graph that gets drawn (default 60; large graphs become a hairball) |
+| `--show` | Open the plots in a window as well as saving them |
 
 The files written to `results/`:
 
 - `eigenvalues.csv`: every eigenvalue of every sampled graph
 - `multiplicities_n<N>.txt`: the distinct eigenvalues of one sampled graph, with their multiplicities
 - `summary.csv`: mean ± std of `λ_k/n` at each `n`, next to the graphon limit
+- `graph.png`: one sampled graph drawn as a network, with each vertex coloured by its latent position `u` and sized by its degree, next to its adjacency matrix with vertices sorted by `u`, which looks like a noisy picture of W
 - `graphon.png`, `top_eigenvalues.png`, `spectrum_n<N>.png`: plots
 
 ## Use it from Python
