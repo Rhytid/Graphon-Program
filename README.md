@@ -46,6 +46,30 @@ The files written to `results/`:
 - `graph.png`: one sampled graph drawn as a network, with each vertex coloured by its latent position `u` and sized by its degree, next to its adjacency matrix with vertices sorted by `u`, which looks like a noisy picture of W
 - `graphon.png`, `top_eigenvalues.png`, `spectrum_n<N>.png`: plots
 
+## Verifying correctness
+
+```bash
+.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
+.venv\Scripts\python.exe -m pytest
+```
+
+The suite (about 1½ minutes) checks the program against answers known from mathematics:
+
+| File | What it checks |
+|---|---|
+| `tests/test_graphon.py` | Formulas are parsed and validated. The limit eigenvalues match closed-form answers for `p`, `x*y` (1/3), a two-block graphon (2×2 matrix), and `exp(-abs(x-y))` (roots of a transcendental equation) |
+| `tests/test_sampling.py` | Sampled graphs are simple, undirected 0/1 graphs. Latent points are Uniform[0,1]. Over 4000 samples each edge appears at rate W(x_i, x_j) within binomial error. Mean degree is (n−1)∫∫W. Seeds reproduce |
+| `tests/test_spectrum.py` | Exact identities: Σλ = 0, Σλ² = 2·edges, Σλ³ = 6·triangles. Agreement with scipy and networkx. Exact spectra of K_n, K_{5,5} and the empty graph. Erdős–Rényi semicircle bounds. Multiplicity grouping |
+| `tests/test_convergence.py` | λ_k/n approaches the graphon limit, and the error shrinks as n grows |
+| `tests/test_run.py` | `run.py` writes every output file, with contents that agree with each other, reproducibly, and rejects invalid formulas |
+
+The tests were themselves checked by planting six deliberate bugs, such as edges 10% too rare, self-loops, non-uniform latent points, a 0.05% error in the limit, wrong multiplicity grouping, and the wrong eigenvalue order. The suite caught every one.
+
+**Known limitations**
+- Sampled graphs almost never have exactly repeated eigenvalues. Multiplicities are found by grouping values within `--tol`, so they are meaningful mainly for structured graphs (grid sampling, block graphons).
+- Limit eigenvalues come from a 2000-point midpoint rule. They are accurate to about 1e-6 for smooth W, and less accurate for W with jumps that don't fall on grid cells.
+- Each graph needs O(n²) memory and O(n³) time for its eigenvalues, so n of a few thousand is the practical limit.
+
 ## Use it from Python
 
 ```python
