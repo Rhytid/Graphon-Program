@@ -13,12 +13,86 @@ A **graphon** is a symmetric function `W: [0,1]² → [0,1]`. A graph on `n` ver
 For large `n`, `λ_k(A) / n` converges to the k-th eigenvalue of the integral operator
 `(T_W f)(x) = ∫ W(x,y) f(y) dy`. The code computes that limit numerically, so you can watch the sampled values approach it.
 
-## Setup
+## Getting started (no experience needed)
+
+You only do steps 1–3 once. After that, step 4 is all you need.
+
+### 1. Install Python
+
+You need Python 3.10 or newer. It's free.
+
+- **Windows**
+  1. Go to https://www.python.org/downloads/ and click the yellow **Download Python** button.
+  2. Run the installer. On the first screen, **tick "Add python.exe to PATH"** at the bottom. This step is easy to miss, and nothing works without it.
+  3. Click **Install Now**.
+- **Mac**
+  1. Go to https://www.python.org/downloads/ and download the macOS installer.
+  2. Open it and click through the steps.
+
+To check the install, open a terminal:
+- **Windows:** press the Windows key, type `cmd`, and press Enter.
+- **Mac:** open **Terminal** from Applications → Utilities.
+
+Then type this and press Enter:
+
+```bash
+python --version
+```
+
+On Mac, type `python3 --version` instead. You should see something like `Python 3.12.4`. If you get "not recognized" on Windows, reinstall Python and make sure you tick the PATH box.
+
+### 2. Download this program
+
+1. Go to https://github.com/Rhytid/Graphon-Program
+2. Click the green **Code** button, then **Download ZIP**.
+3. Unzip it. On Windows, right-click the file and choose **Extract All**. On Mac, double-click it. You'll get a folder called `Graphon-Program-main`.
+
+### 3. Install the libraries the program uses
+
+In the terminal, go into that folder. The easiest way is to type `cd ` (with a space after it), drag the folder onto the terminal window, and press Enter. Then run these two commands.
+
+**Windows:**
 
 ```bash
 python -m venv .venv
+```
+```bash
 .venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
+
+**Mac:**
+
+```bash
+python3 -m venv .venv
+```
+```bash
+.venv/bin/python -m pip install -r requirements.txt
+```
+
+The commands create a private Python environment for this folder, called `.venv`, and download the libraries into it. This takes a minute or two and needs an internet connection.
+
+### 4. Run it
+
+**Windows:**
+
+```bash
+.venv\Scripts\python.exe run.py --formula "x*y"
+```
+
+**Mac:**
+
+```bash
+.venv/bin/python run.py --formula "x*y"
+```
+
+The program prints a table of eigenvalues and saves its results and pictures in a new `results` folder. Change the formula to try other graphons, such as `--formula "exp(-abs(x-y))"`. Add `--show` to open the pictures in a window.
+
+The rest of this README uses the Windows commands. On Mac, replace `.venv\Scripts\python.exe` with `.venv/bin/python`.
+
+**If something goes wrong**
+- *"python is not recognized"*: Python isn't on your PATH. Reinstall it and tick **Add python.exe to PATH**.
+- *"No such file run.py"*: you're not in the program's folder. Repeat the `cd` step in step 3.
+- *"No module named numpy"* (or sympy, networkx and so on): run step 3 again. Also make sure you start the command with `.venv\Scripts\python.exe` (Mac: `.venv/bin/python`), not a plain `python`.
 
 ## Run
 
